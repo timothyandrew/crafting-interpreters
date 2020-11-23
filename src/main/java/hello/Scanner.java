@@ -1,29 +1,47 @@
-
 package hello;
 
+import static hello.TokenType.AND;
 import static hello.TokenType.BANG;
 import static hello.TokenType.BANG_EQUAL;
+import static hello.TokenType.CLASS;
 import static hello.TokenType.COMMA;
 import static hello.TokenType.DOT;
+import static hello.TokenType.ELSE;
 import static hello.TokenType.EOF;
 import static hello.TokenType.EQUAL;
 import static hello.TokenType.EQUAL_EQUAL;
+import static hello.TokenType.FALSE;
+import static hello.TokenType.FOR;
+import static hello.TokenType.FUN;
 import static hello.TokenType.GREATER;
 import static hello.TokenType.GREATER_EQUAL;
+import static hello.TokenType.IDENTIFIER;
+import static hello.TokenType.IF;
 import static hello.TokenType.LEFT_BRACE;
 import static hello.TokenType.LEFT_PAREN;
 import static hello.TokenType.LESS;
 import static hello.TokenType.LESS_EQUAL;
+import static hello.TokenType.NIL;
 import static hello.TokenType.NUMBER;
+import static hello.TokenType.OR;
 import static hello.TokenType.PLUS;
+import static hello.TokenType.PRINT;
+import static hello.TokenType.RETURN;
 import static hello.TokenType.RIGHT_BRACE;
 import static hello.TokenType.RIGHT_PAREN;
 import static hello.TokenType.SEMICOLON;
 import static hello.TokenType.SLASH;
 import static hello.TokenType.STAR;
+import static hello.TokenType.SUPER;
+import static hello.TokenType.THIS;
+import static hello.TokenType.TRUE;
+import static hello.TokenType.VAR;
+import static hello.TokenType.WHILE;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 class Scanner {
 	String in;
@@ -35,6 +53,30 @@ class Scanner {
 	int current;
 	// Line number
 	int line;
+
+	private static final Map<String, TokenType> keywords;
+
+	// TIL!
+	static {
+		keywords = new HashMap<>();
+
+		keywords.put("and", AND);
+		keywords.put("class", CLASS);
+		keywords.put("else", ELSE);
+		keywords.put("false", FALSE);
+		keywords.put("for", FOR);
+		keywords.put("fun", FUN);
+		keywords.put("if", IF);
+		keywords.put("nil", NIL);
+		keywords.put("or", OR);
+		keywords.put("print", PRINT);
+		keywords.put("return", RETURN);
+		keywords.put("super", SUPER);
+		keywords.put("this", THIS);
+		keywords.put("true", TRUE);
+		keywords.put("var", VAR);
+		keywords.put("while", WHILE);
+	}
 
 	Scanner(String in) {
 		this.in = in;
@@ -127,11 +169,35 @@ class Scanner {
 			default:
 				if (isDigit(c)) {
 					number();
+				} else if (isAlpha(c)) {
+					identifier();
 				} else {
 					Lox.error(line, "Invalid character!");
 				}
 				break;
 		}
+	}
+
+	private void identifier() {
+		while (isAlphaNumeric(peek())) {
+			advance();
+		}
+
+		String s = in.substring(start, current);
+
+		if (keywords.containsKey(s.toLowerCase())) {
+			addToken(keywords.get(s.toLowerCase()));
+		} else {
+			addToken(IDENTIFIER);
+		}
+	}
+
+	private boolean isAlpha(char c) {
+		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+	}
+
+	private boolean isAlphaNumeric(char c) {
+		return isAlpha(c) || isDigit(c);
 	}
 
 	private void string() {
