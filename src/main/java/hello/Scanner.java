@@ -147,11 +147,29 @@ class Scanner {
 
 			// Comments / divison
 			case '/':
+				// Line comment
 				if (match('/')) {
 					while (peek() != '\n' && !isAtEnd()) {
 						advance();
 					}
 
+				// Block comment
+				} else if (match('*')) {
+					while (!isAtEnd() && peek() != '*' && peekNext() != '/') {
+						if (peek() == '\n') {
+							line++;
+						}
+
+						advance();
+					}
+
+					if (isAtEnd()) {
+						Lox.error(line, "Unterminated block comment!");
+						return;
+					}
+
+					advance();
+					advance();
 				} else {
 					addToken(SLASH);
 				}
