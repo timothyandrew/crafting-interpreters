@@ -6,7 +6,12 @@
 ## Build
 
 ```bash
+# 1. Run jlox
 $ gradle build && java -jar build/libs/crafting.jar
-# OR
+# -- OR --
 $ ./gradlew run
+
+# 2. Generate Expr.java
+$ cd exprgen
+$ go build && ./exprgen > ../src/main/java/hello/Expr.java
 ```
