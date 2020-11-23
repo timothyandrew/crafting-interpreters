@@ -5,6 +5,7 @@ target
 .project
 *.class
 
+exprgen/exprgen
 *.swp
 *~
 
