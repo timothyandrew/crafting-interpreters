@@ -5,6 +5,9 @@ target
 .project
 *.class
 
+*.swp
+*~
+
 # Log file
 *.log
 
