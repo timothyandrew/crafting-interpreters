@@ -15,8 +15,8 @@ type ExpressionType struct {
 	contents []ExpressionContents
 }
 
-func buildExpressionTypes() {
-	var expressionTypes = []ExpressionType{
+func types() []ExpressionType {
+	return []ExpressionType{
 		{jtype: "Binary", contents: []ExpressionContents{
 			{jtype: "Expr", name: "left"},
 			{jtype: "Token", name: "operator"},
@@ -33,7 +33,9 @@ func buildExpressionTypes() {
 			{jtype: "Expr", name: "right"},
 		}},
 	}
+}
 
+func buildExpressionTypes(expressionTypes []ExpressionType) {
 	for _, expressionType := range expressionTypes {
 		fmt.Println("  static class", expressionType.jtype, "extends Expr {")
 
@@ -55,7 +57,13 @@ func buildExpressionTypes() {
 			fmt.Printf("      this.%s = %s;\n", field.name, field.name)
 		}
 
-		fmt.Println("\n    }\n  }\n")
+		fmt.Println("\n    }\n")
+
+		fmt.Println("    <R> R accept(Visitor<R> visitor) {")
+		fmt.Println("      return visitor.visit(this);")
+		fmt.Println("    }")
+
+		fmt.Println("\n  }\n")
 	}
 }
 
@@ -63,7 +71,12 @@ func main() {
 	fmt.Println("package hello;\n")
 	fmt.Println("abstract class Expr {")
 
-	buildExpressionTypes()
+	fmt.Println("  abstract <R> R accept(Visitor<R> visitor);")
+
+	var types = types()
+
+	buildExpressionTypes(types)
+	defineVisitor(types)
 
 	fmt.Println("}")
 }
