@@ -1,5 +1,7 @@
 all: build/libs/crafting.jar
 
+intellij: src/main/java/hello/Expr.java
+
 src/main/java/hello/Expr.java: exprgen/exprgen
 	$< > $@
 

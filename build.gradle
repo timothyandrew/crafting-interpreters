@@ -5,9 +5,9 @@ mainClassName = 'hello.Lox'
 
 jar {
     manifest {
-	attributes(
-	    'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
-	    'Main-Class': 'hello.Lox'
-	)
+		attributes(
+			'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+			'Main-Class': 'hello.Lox'
+		)
     }
 }
