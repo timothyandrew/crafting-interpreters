@@ -1,42 +1,6 @@
 package hello;
 
-import static hello.TokenType.AND;
-import static hello.TokenType.BANG;
-import static hello.TokenType.BANG_EQUAL;
-import static hello.TokenType.CLASS;
-import static hello.TokenType.COMMA;
-import static hello.TokenType.DOT;
-import static hello.TokenType.ELSE;
-import static hello.TokenType.EOF;
-import static hello.TokenType.EQUAL;
-import static hello.TokenType.EQUAL_EQUAL;
-import static hello.TokenType.FALSE;
-import static hello.TokenType.FOR;
-import static hello.TokenType.FUN;
-import static hello.TokenType.GREATER;
-import static hello.TokenType.GREATER_EQUAL;
-import static hello.TokenType.IDENTIFIER;
-import static hello.TokenType.IF;
-import static hello.TokenType.LEFT_BRACE;
-import static hello.TokenType.LEFT_PAREN;
-import static hello.TokenType.LESS;
-import static hello.TokenType.LESS_EQUAL;
-import static hello.TokenType.NIL;
-import static hello.TokenType.NUMBER;
-import static hello.TokenType.OR;
-import static hello.TokenType.PLUS;
-import static hello.TokenType.PRINT;
-import static hello.TokenType.RETURN;
-import static hello.TokenType.RIGHT_BRACE;
-import static hello.TokenType.RIGHT_PAREN;
-import static hello.TokenType.SEMICOLON;
-import static hello.TokenType.SLASH;
-import static hello.TokenType.STAR;
-import static hello.TokenType.SUPER;
-import static hello.TokenType.THIS;
-import static hello.TokenType.TRUE;
-import static hello.TokenType.VAR;
-import static hello.TokenType.WHILE;
+import static hello.TokenType.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,8 +83,17 @@ class Scanner {
             case '+':
                 addToken(PLUS);
                 break;
+            case '-':
+                addToken(MINUS);
+                break;
             case ';':
                 addToken(SEMICOLON);
+                break;
+            case ':':
+                addToken(COLON);
+                break;
+            case '?':
+                addToken(QUESTION);
                 break;
             case '*':
                 addToken(STAR);

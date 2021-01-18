@@ -15,6 +15,14 @@ public class Lox {
         report(line, "", message);
     }
 
+    static void error(Token token, String message) {
+        if (token.type == TokenType.EOF) {
+            report(token.line, " at end", message);
+        } else {
+            report(token.line, " at '" + token.lexeme + "'", message);
+        }
+    }
+
     static void report(int line, String where, String message) {
         System.err.println("[Line " + line + "] Error" + where + ": " + message);
         hadError = true;
@@ -23,13 +31,18 @@ public class Lox {
     public static void run(String in) {
         Scanner scanner = new Scanner(in);
         List<Token> tokens = scanner.scanTokens();
+        Parser parser = new Parser(tokens);
+        Expr parsed = parser.parse();
+
+        if (parsed != null) {
+            System.out.println(parsed.accept(new AstPrinter()));
+        }
 
         for (Token token : tokens) {
             System.out.println(token);
         }
     }
-
-    public static void runPrompt() throws IOException {
+public static void runPrompt() throws IOException {
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 

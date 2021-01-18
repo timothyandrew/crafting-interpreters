@@ -1,11 +1,18 @@
 package hello;
 
-import hello.Expr.Binary;
-import hello.Expr.Grouping;
-import hello.Expr.Literal;
-import hello.Expr.Unary;
+import hello.Expr.*;
 
 class AstPrinter implements Expr.Visitor<String> {
+    @Override
+    public String visit(Ternary expr) {
+        return parenthesize(
+                expr.test.accept(this),
+                "?",
+                expr.left.accept(this),
+                ":",
+                expr.right.accept(this));
+    }
+
     @Override
     public String visit(Binary expr) {
         return parenthesize(expr.operator.lexeme,
