@@ -10,6 +10,8 @@ import java.util.List;
 
 public class Lox {
     static boolean hadError = false;
+    static boolean hadRuntimeError = false;
+    private static final Interpreter interpreter = new Interpreter();
 
     static void error(int line, String message) {
         report(line, "", message);
@@ -28,21 +30,22 @@ public class Lox {
         hadError = true;
     }
 
+    static void runtimeError(RuntimeError error) {
+        System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
+    }
+
     public static void run(String in) {
         Scanner scanner = new Scanner(in);
         List<Token> tokens = scanner.scanTokens();
         Parser parser = new Parser(tokens);
         Expr parsed = parser.parse();
 
-        if (parsed != null) {
-            System.out.println(parsed.accept(new AstPrinter()));
-        }
+        if (hadError) { return; }
 
-        for (Token token : tokens) {
-            System.out.println(token);
-        }
+        interpreter.interpret(parsed);
     }
-public static void runPrompt() throws IOException {
+
+    public static void runPrompt() throws IOException {
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 
@@ -63,9 +66,8 @@ public static void runPrompt() throws IOException {
         byte[] bytes = Files.readAllBytes(Paths.get(path));
         run(new String(bytes, Charset.defaultCharset()));
 
-        if (hadError) {
-            System.exit(65);
-        }
+        if (hadError) { System.exit(65); }
+        if (hadRuntimeError) { System.exit(70); }
     }
 
     public static void main(String[] args) throws IOException {

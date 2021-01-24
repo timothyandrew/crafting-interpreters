@@ -22,6 +22,11 @@ func types() []ExpressionType {
 			{jtype: "Token", name: "operator"},
 			{jtype: "Expr", name: "right"},
 		}},
+		{jtype: "Ternary", contents: []ExpressionContents{
+			{jtype: "Expr", name: "test"},
+			{jtype: "Expr", name: "left"},
+			{jtype: "Expr", name: "right"},
+		}},
 		{jtype: "Grouping", contents: []ExpressionContents{
 			{jtype: "Expr", name: "expression"},
 		}},
