@@ -12,6 +12,7 @@ public class Lox {
     static boolean hadError = false;
     static boolean hadRuntimeError = false;
     private static final Interpreter interpreter = new Interpreter();
+    private static final AstPrinter printer = new AstPrinter();
 
     static void error(int line, String message) {
         report(line, "", message);
@@ -42,6 +43,8 @@ public class Lox {
 
         if (hadError) { return; }
 
+
+        System.out.println(parsed.accept(printer));
         interpreter.interpret(parsed);
     }
 
